@@ -15,6 +15,8 @@ namespace Platform
         [SerializeField]
         private GameObject _platformSprite;
 
+        private Vector2 _levelOffset = new Vector2(12f, 7f);
+
 
         void Start()
         {
@@ -32,7 +34,7 @@ namespace Platform
                         if(pixel.a > 0.9f && pixel == t.color)
                         {
                             GameObject platform = CreateTile(t); //create a tile specific to the corresponding pixel
-                            platform.transform.position = new Vector3(x - 12.5f, y-7.5f, 0);
+                            platform.transform.position = new Vector3(x - _levelOffset.x, y- _levelOffset.y, 0);
                             platform.transform.SetParent(this.transform);
                         }
                         
