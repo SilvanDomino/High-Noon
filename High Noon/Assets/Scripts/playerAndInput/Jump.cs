@@ -3,40 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Jump : MonoBehaviour {
-	private float inputValue = 0;
 	private Rigidbody2D rb;
-	private float lastInputValue = 0;
-	[SerializeField]private float maxJumpForce = 5;
+	[SerializeField]private float maxJumpForce = 100;
 	[SerializeField]private byte maxJumps = 2;
-	private float currentJumpForce = 0;
 	private byte numJumps = 0;
 
+	float vel = 0;
+	float iv = 0;
+	float acc = -15f;
+	float time = 0;
 
-	public float Input
-	{
-		set{ inputValue = value; }
-	}
 	// Use this for initialization
 	void Start () {
 		rb = gameObject.GetComponent<Rigidbody2D>();
 	}	
+	public void StartJump(float normalisedValue){
+
+		print("start jump norm value "+ normalisedValue);
+
+		if(numJumps < maxJumps){
+			numJumps++;
+			iv = normalisedValue * maxJumpForce;
+			vel = 0;
+			time = 0;
+		}
+	}
+
 	
 	// Update is called once per frame
 	void FixedUpdate()
-	{
-		
+	{		
 		//jumpbutton released
-		if(inputValue < lastInputValue){
+		//velocity = initialVelocity + accelleration * time
+		time += Time.deltaTime;
 
-			if(numJumps < maxJumps){
-				rb.AddForce(Vector2.up * maxJumpForce * inputValue);
-				numJumps++; 
-			}
-		}
+		vel = iv + acc * time;
+
+		print("vel : "+vel);
+		Vector2 newPosition = rb.position + (Vector2)transform.up * 800;
+		//print("newPosition " + newPosition );
+		rb.MovePosition(newPosition);
 
 
-
-
-		lastInputValue = inputValue;
+	}
+	public void Lands(){
+		
 	}
 }

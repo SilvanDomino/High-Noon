@@ -6,12 +6,17 @@ using UnityEngine;
 /// </summary>
 public class InputHandler : MonoBehaviour {
 	[SerializeField]private byte playerNumber = 1;
-	private MoveHorizontal mhScript;
-	private Jump jScript;
+	private MovePlayer mpScript;
+//	private Jump jScript;
+	private List<string> jumpKeys = new List<string>();
+
 	// Use this for initialization
 	void Start () {
-		mhScript = gameObject.GetComponent<MoveHorizontal>();
-		jScript = gameObject.GetComponent<Jump>();	
+		jumpKeys.Add("Fire1");
+		jumpKeys.Add("Fire2");
+
+		mpScript = gameObject.GetComponent<MovePlayer>();
+		//jScript = gameObject.GetComponent<Jump>();	
 	}	
 	// Update is called once per frame
 	void Update () {
@@ -21,7 +26,19 @@ public class InputHandler : MonoBehaviour {
 		//print(playerNumber + " : h : "+hValue+ " : v : "+ vValue);
 
 		//Handle player methods
-		mhScript.Input = hValue;
-		jScript.Input = vValue;
+		mpScript.MoveInput = hValue;
+	
+
+		if(Input.GetButton(jumpKeys[playerNumber-1]))	
+		{
+			print("vValue"+ vValue);
+			mpScript.Jump(vValue);
+		}
+		if(Input.GetButtonUp(jumpKeys[playerNumber-1])){
+			mpScript.NumJumps++;
+		}	
+			
+
 	}
+
 }
