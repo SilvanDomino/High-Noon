@@ -21,7 +21,6 @@ namespace Platform
             //parent of all the cubes
             this.name = "Level";
 
-
             for (int x = 0; x < _level.width; x++) //run through all the pixels and get the colors
             {
                 for (int y = 0; y < _level.height; y++)
