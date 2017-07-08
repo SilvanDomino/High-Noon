@@ -13,23 +13,31 @@ public class MovePlayer : MonoBehaviour {
 	[SerializeField]private float gravityAccelleration = -30f;
 	[SerializeField]private float maxGravity = -8f;
 	[SerializeField]private float rayLength = 1f;
+	[SerializeField]private byte maxJumps = 2;
 
 	private Rigidbody2D rb;
 	private SpriteRenderer sr;
 	private bool flip = false;
 	private byte count = 0;
-	private byte maxJumps = 2;
+
 	private byte numJumps = 0;
 	private float iv = 0;
 	private float vel = 0;
 	private float time = 0;
 	private bool landed = false;
 	private bool start = false;
+	private bool dropping = true;
+	private int direction = 1;
+	private bool jumping = false;
 
-	public byte NumJumps
+	public void ResetJump()
 	{
-		get{return numJumps;}
-		set{numJumps = value;}
+		if(numJumps < maxJumps-1){
+			numJumps++;
+
+			jumping = false;
+
+		}
 	}
 
 	public float MoveInput
@@ -42,26 +50,25 @@ public class MovePlayer : MonoBehaviour {
 		rb = this.gameObject.GetComponent<Rigidbody2D>();
 		sr = this.gameObject.GetComponent<SpriteRenderer>();
 	}
+	public void Jump(){
 
-	public void Jump(float normalisedValue){
-
-		if(numJumps < maxJumps){
-			if(iv < maxJumpForce){
-				iv = normalisedValue * jumpForce;
+		if(!dropping && !jumping){
+				iv = jumpForce;
 				vel = 0;
 				time = 0;
+				jumping = true;
 				landed = false;
-			}
 		}
 			
 	}
+
 
 	// Update is called once per frame
 	void FixedUpdate()
 	{			
 		time += Time.deltaTime;
 
-		if(!landed)vel = iv + gravityAccelleration * time;
+		vel = iv + gravityAccelleration * time;
 		if(vel < maxGravity)vel = maxGravity;
 		if(vel > maxJumpForce)vel = maxJumpForce;
 
@@ -73,14 +80,42 @@ public class MovePlayer : MonoBehaviour {
 		//print("hMove"+hMove+"vMove"+vMove+"new position vector"+newPosition);	
 		rb.MovePosition( newPosition );
 
-		int direction = (int)Mathf.Round(hNormal);
-		flip = (direction >= 0) ? false : true;
-		sr.flipX = flip;
+		// = (int)Mathf.Round(hNormal);
+		if(hNormal < 0)direction = (int)Mathf.Floor(hNormal);
+		if(hNormal > 0)direction = (int)Mathf.Ceil(hNormal);
 
-		if(vel <= 0)checkCollision();
+
+		//print("hNormal"+hNormal);
+
+		if(direction < 0)flip = true;
+		if(direction > 0)flip = false;
+		sr.flipX = flip;
+		//if(direction<0)direction=-1;
+		//if(direction>=0)direction=1;
+		//print(direction);
+		//this.gameObject.transform.localScale.x = direction;
+
+
+		if(vel <= 0)HandleFeetCollision();
+		if(vel > 0)HandleHeadCollision();
 
 	}
-	private void checkCollision()
+	private void HandleHeadCollision()
+	{
+		Debug.DrawRay(rb.position,Vector2.up * rayLength);
+		RaycastHit2D hit = Physics2D.Raycast(rb.position,Vector2.up, rayLength);
+		Collider2D coll = hit.collider;
+		if(coll != null ){
+			if(coll.gameObject.tag == "Collidable")
+			{
+				iv = 0;
+				vel = 0;
+				dropping = true;
+
+			}
+		}
+	}
+	private void HandleFeetCollision()
 	{
 		Debug.DrawRay(rb.position,Vector2.down * rayLength);
 		RaycastHit2D hit = Physics2D.Raycast(rb.position,Vector2.down, rayLength);
@@ -109,7 +144,14 @@ public class MovePlayer : MonoBehaviour {
 		iv = 0; 
 		rb.MovePosition(position);
 		numJumps = 0;
+		jumping = false;
+		dropping = false;
 	}	
+	public bool Landed
+	{
+		get{return landed;}
+
+	}
 	private void Drops()
 	{
 		landed = false;
