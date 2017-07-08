@@ -13,23 +13,26 @@ public class MovePlayer : MonoBehaviour {
 	[SerializeField]private float gravityAccelleration = -30f;
 	[SerializeField]private float maxGravity = -8f;
 	[SerializeField]private float rayLength = 1f;
+	[SerializeField]private byte maxJumps = 2;
 
 	private Rigidbody2D rb;
 	private SpriteRenderer sr;
 	private bool flip = false;
 	private byte count = 0;
-	private byte maxJumps = 2;
+
 	private byte numJumps = 0;
 	private float iv = 0;
 	private float vel = 0;
 	private float time = 0;
 	private bool landed = false;
 	private bool start = false;
-
-	public byte NumJumps
+	private bool dropping = true;
+	public void ResetJump()
 	{
-		get{return numJumps;}
-		set{numJumps = value;}
+		if(numJumps < maxJumps-1){
+			numJumps++;
+			iv = 0;
+		}
 	}
 
 	public float MoveInput
@@ -45,7 +48,7 @@ public class MovePlayer : MonoBehaviour {
 
 	public void Jump(float normalisedValue){
 
-		if(numJumps < maxJumps){
+		if(!dropping){
 			if(iv < maxJumpForce){
 				iv = normalisedValue * jumpForce;
 				vel = 0;
@@ -77,10 +80,26 @@ public class MovePlayer : MonoBehaviour {
 		flip = (direction >= 0) ? false : true;
 		sr.flipX = flip;
 
-		if(vel <= 0)checkCollision();
+		if(vel <= 0)HandleFeetCollision();
+		if(vel > 0)HandleHeadCollision();
 
 	}
-	private void checkCollision()
+	private void HandleHeadCollision()
+	{
+		Debug.DrawRay(rb.position,Vector2.up * rayLength);
+		RaycastHit2D hit = Physics2D.Raycast(rb.position,Vector2.up, rayLength);
+		Collider2D coll = hit.collider;
+		if(coll != null ){
+			if(coll.gameObject.tag == "Collidable")
+			{
+				iv = 0;
+				vel = 0;
+				dropping = true;
+
+			}
+		}
+	}
+	private void HandleFeetCollision()
 	{
 		Debug.DrawRay(rb.position,Vector2.down * rayLength);
 		RaycastHit2D hit = Physics2D.Raycast(rb.position,Vector2.down, rayLength);
@@ -109,7 +128,13 @@ public class MovePlayer : MonoBehaviour {
 		iv = 0; 
 		rb.MovePosition(position);
 		numJumps = 0;
+		dropping = false;
 	}	
+	public bool Landed
+	{
+		get{return landed;}
+
+	}
 	private void Drops()
 	{
 		landed = false;

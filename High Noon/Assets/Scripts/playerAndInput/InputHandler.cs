@@ -28,16 +28,20 @@ public class InputHandler : MonoBehaviour {
 		//Handle player methods
 		mpScript.MoveInput = hValue;
 	
-
+	
 		if(Input.GetButton(jumpKeys[playerNumber-1]))	
 		{
-			print("vValue"+ vValue);
+		//	print("vValue"+ vValue);
+
 			mpScript.Jump(vValue);
 		}
 		if(Input.GetButtonUp(jumpKeys[playerNumber-1])){
-			mpScript.NumJumps++;
+
+			vValue = 0;
+			mpScript.ResetJump();
+
 		}	
-			
+
 
 	}
 
