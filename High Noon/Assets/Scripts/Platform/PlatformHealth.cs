@@ -34,12 +34,11 @@ namespace Platform
 
         private void DestroyPlatform()
         {
-            Destroy(this.gameObject, 0.3f);
             if (_particleSystem)
             {
-                Instantiate<GameObject>(_particleSystem, transform.position, Quaternion.identity);
+                var particleObj = Instantiate<GameObject>(_particleSystem, transform.position, Quaternion.identity);
             }
-            
+            Destroy(this.gameObject);
         }
     }
 }
