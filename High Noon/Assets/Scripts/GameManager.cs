@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public void GameWon(Player p)
     {
-        //print(winningPlayer.gameObject.name + " WON");
+
         _currentState = GameState.WinScreen;
         _winScreen.UpdateUI(new WinData(p.name, p.ID));
         _winScreenObj.SetActive(true);
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     public void ReloadScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
 
