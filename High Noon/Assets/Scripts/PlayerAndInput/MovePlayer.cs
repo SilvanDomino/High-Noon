@@ -82,7 +82,7 @@ public class MovePlayer : MonoBehaviour {
 		if(direction<0)direction=-1;
 		if(direction>=0)direction=1;
 		print(direction);
-		this.gameObject.transform.localScale.x = direction;
+		//this.gameObject.transform.localScale.x = direction;
 
 
 		if(vel <= 0)HandleFeetCollision();
