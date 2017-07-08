@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlatformCollision : MonoBehaviour {
+namespace Platform
+{
+    public class PlatformCollision : MonoBehaviour
+    {
+        
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 }
+
