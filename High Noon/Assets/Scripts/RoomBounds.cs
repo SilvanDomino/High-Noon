@@ -36,6 +36,7 @@ namespace BulletSystem
             roomwall.isStatic = true;
             roomwall.transform.position = position;
             roomwall.tag = TagManager.COLLIDER;
+            roomwall.layer = LayerMask.NameToLayer("Collidable");
             
             var wallCollider= roomwall.AddComponent<BoxCollider2D>();
             wallCollider.size = colliderSize;

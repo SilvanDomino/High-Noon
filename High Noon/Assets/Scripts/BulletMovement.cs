@@ -19,6 +19,10 @@ namespace BulletSystem
         private float _currentSpeed;
         private Rigidbody2D _rigidbody;
 
+        [Header("Collision")]
+        [SerializeField]
+        private LayerMask _layer;
+        private float _skinSize = 0.4f;
         
         private void Awake()
         {
@@ -29,6 +33,17 @@ namespace BulletSystem
         {
             _rotationSpeed = Random.Range(_rotationSpeedMin, _rotationSpeedMax);
             _currentSpeed = _initialsSpeed;
+        }
+
+        private void Update()
+        {
+            var hit = Physics2D.Raycast(transform.position, new Vector2(transform.up.x, transform.up.y), _skinSize,
+                _layer);
+            if (hit.collider != null)
+            {
+                BulletCollision(hit);
+            }
+
         }
         
         private void FixedUpdate()
@@ -49,25 +64,15 @@ namespace BulletSystem
             
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void BulletCollision(RaycastHit2D hit)
         {
-            
-            if (!other.gameObject.CompareTag(TagManager.COLLIDER)) return; 
-                
-            var collidable = other.gameObject.GetComponent<ICollidable>();
+            var collidable = hit.collider.GetComponent<ICollidable>();
             if (collidable != null)
             {
                 collidable.Collide();
             }
-                
-               
-            BounceBullet(other);
-        }
-
-        private void BounceBullet(Collision2D other)
-        {
-            //print(other.contacts.Length);
-            var newDirection = Vector2.Reflect(transform.up, other.contacts[0].normal);
+            
+            var newDirection = Vector2.Reflect(transform.up, hit.normal);
             transform.rotation = Quaternion.FromToRotation(Vector3.up, newDirection);
         }
     }
