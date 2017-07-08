@@ -8,11 +8,11 @@ namespace Platform
     
     public class PlatformCollision : MonoBehaviour, BulletSystem.ICollidable
     {
-        private PlatformHealth _platformHealth;
+        public PlatformHealth _platformHealth;
 
         void Start()
         {
-            _platformHealth = gameObject.AddComponent<PlatformHealth>();
+            _platformHealth = gameObject.GetComponent<PlatformHealth>();
         }
 
         public void Collide()
