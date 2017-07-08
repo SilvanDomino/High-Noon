@@ -16,7 +16,7 @@ public class MovePlayer : MonoBehaviour {
 	[SerializeField]private byte maxJumps = 2;
 
 	private Rigidbody2D rb;
-	//private SpriteRenderer sr;
+	private SpriteRenderer sr;
 	private bool flip = false;
 	private byte count = 0;
 
@@ -43,7 +43,7 @@ public class MovePlayer : MonoBehaviour {
 	void Start () 
 	{
 		rb = this.gameObject.GetComponent<Rigidbody2D>();
-		//sr = this.gameObject.GetComponent<SpriteRenderer>();
+		sr = this.gameObject.GetComponent<SpriteRenderer>();
 	}
 
 	public void Jump(float normalisedValue){
@@ -77,11 +77,11 @@ public class MovePlayer : MonoBehaviour {
 		rb.MovePosition( newPosition );
 
 		int direction = (int)Mathf.Round(hNormal);
-		//flip = (direction >= 0) ? false : true;
-		//sr.flipX = flip;
-		if(direction<0)direction=-1;
-		if(direction>=0)direction=1;
-		print(direction);
+		flip = (direction >= 0) ? false : true;
+		sr.flipX = flip;
+		//if(direction<0)direction=-1;
+		//if(direction>=0)direction=1;
+		//print(direction);
 		//this.gameObject.transform.localScale.x = direction;
 
 
