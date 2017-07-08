@@ -58,7 +58,11 @@ namespace BulletSystem
                       var velocity = new Vector2(transform.up.x, transform.up.y) * _currentSpeed * Time.deltaTime;
                       _rigidbody.MovePosition(_rigidbody.position + velocity);
                       break;
-                default:
+                      
+                    case GameManager.GameState.WinScreen:
+                        break;
+                        
+                   default:
                     throw new ArgumentOutOfRangeException();
             }
             
