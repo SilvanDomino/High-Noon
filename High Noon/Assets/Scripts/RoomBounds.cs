@@ -35,6 +35,8 @@ namespace BulletSystem
             var roomwall = new GameObject("Roomwall");
             roomwall.isStatic = true;
             roomwall.transform.position = position;
+            roomwall.tag = TagManager.COLLIDER;
+            
             var wallCollider= roomwall.AddComponent<BoxCollider2D>();
             wallCollider.size = colliderSize;
             roomwall.transform.SetParent(transform);
