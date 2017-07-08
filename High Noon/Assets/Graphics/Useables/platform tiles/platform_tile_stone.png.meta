@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: b705b33bf96e68b419b950206ab70a39
 timeCreated: 1499510377
+=======
+guid: 05b7f6026213f4f8e97745de158713f1
+timeCreated: 1499509051
+>>>>>>> bulletsystem
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
