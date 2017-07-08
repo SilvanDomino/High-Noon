@@ -27,11 +27,16 @@ public class MovePlayer : MonoBehaviour {
 	private bool landed = false;
 	private bool start = false;
 	private bool dropping = true;
+	private int direction = 1;
+	private bool jumping = false;
+
 	public void ResetJump()
 	{
 		if(numJumps < maxJumps-1){
 			numJumps++;
-			iv = 0;
+
+			jumping = false;
+
 		}
 	}
 
@@ -45,26 +50,25 @@ public class MovePlayer : MonoBehaviour {
 		rb = this.gameObject.GetComponent<Rigidbody2D>();
 		sr = this.gameObject.GetComponent<SpriteRenderer>();
 	}
+	public void Jump(){
 
-	public void Jump(float normalisedValue){
-
-		if(!dropping){
-			if(iv < maxJumpForce){
-				iv = normalisedValue * jumpForce;
+		if(!dropping && !jumping){
+				iv = jumpForce;
 				vel = 0;
 				time = 0;
+				jumping = true;
 				landed = false;
-			}
 		}
 			
 	}
+
 
 	// Update is called once per frame
 	void FixedUpdate()
 	{			
 		time += Time.deltaTime;
 
-		if(!landed)vel = iv + gravityAccelleration * time;
+		vel = iv + gravityAccelleration * time;
 		if(vel < maxGravity)vel = maxGravity;
 		if(vel > maxJumpForce)vel = maxJumpForce;
 
@@ -76,8 +80,15 @@ public class MovePlayer : MonoBehaviour {
 		//print("hMove"+hMove+"vMove"+vMove+"new position vector"+newPosition);	
 		rb.MovePosition( newPosition );
 
-		int direction = (int)Mathf.Round(hNormal);
-		flip = (direction >= 0) ? false : true;
+		// = (int)Mathf.Round(hNormal);
+		if(hNormal < 0)direction = (int)Mathf.Floor(hNormal);
+		if(hNormal > 0)direction = (int)Mathf.Ceil(hNormal);
+
+
+		//print("hNormal"+hNormal);
+
+		if(direction < 0)flip = true;
+		if(direction > 0)flip = false;
 		sr.flipX = flip;
 		//if(direction<0)direction=-1;
 		//if(direction>=0)direction=1;
@@ -133,6 +144,7 @@ public class MovePlayer : MonoBehaviour {
 		iv = 0; 
 		rb.MovePosition(position);
 		numJumps = 0;
+		jumping = false;
 		dropping = false;
 	}	
 	public bool Landed

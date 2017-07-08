@@ -33,11 +33,11 @@ public class InputHandler : MonoBehaviour {
 		{
 		//	print("vValue"+ vValue);
 
-			mpScript.Jump(vValue);
+			mpScript.Jump();
 		}
 		if(Input.GetButtonUp(jumpKeys[playerNumber-1])){
 
-			vValue = 0;
+			//vValue = 0;
 			mpScript.ResetJump();
 
 		}	
