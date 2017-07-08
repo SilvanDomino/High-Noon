@@ -34,7 +34,7 @@ namespace Platform
 
         private void DestroyPlatform()
         {
-            Destroy(this.gameObject, 0.3f);
+            Destroy(this.gameObject, 0.1f);
             if (_particleSystem)
             {
                 Instantiate<GameObject>(_particleSystem, transform.position, Quaternion.identity);
