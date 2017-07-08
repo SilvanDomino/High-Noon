@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InitialScript : MonoBehaviour {
+public class PlatformCollision : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
