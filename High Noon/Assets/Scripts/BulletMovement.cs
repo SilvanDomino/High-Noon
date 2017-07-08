@@ -36,14 +36,17 @@ namespace BulletSystem
                 
             var collidable = other.gameObject.GetComponent<ICollidable>();
             if (collidable != null)
+            {
                 collidable.Collide();
+            }
+                
                
             BounceBullet(other);
         }
 
         private void BounceBullet(Collision2D other)
         {
-            print(other.contacts.Length);
+            //print(other.contacts.Length);
             var newDirection = Vector2.Reflect(transform.up, other.contacts[0].normal);
             transform.rotation = Quaternion.FromToRotation(Vector3.up, newDirection);
         }

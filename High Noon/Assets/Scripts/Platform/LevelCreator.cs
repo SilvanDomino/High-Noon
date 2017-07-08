@@ -44,7 +44,9 @@ namespace Platform
         private GameObject CreateTile(Tile t)
         {
             GameObject go = (GameObject)Instantiate(_platformSprite);
-            go.GetComponent<PlatformHealth>().Health = t.health;
+            var platformHealth = go.GetComponent<PlatformHealth>();
+            platformHealth.Health = t.health;
+            platformHealth.SetParticleObject = t.death;
             go.GetComponent<SpriteRenderer>().sprite = t.sprite;
             return go;
         }
@@ -57,6 +59,6 @@ namespace Platform
         public int health;
         public Color color;
         public Sprite sprite;
-        public ParticleSystem death;
+        public GameObject death;
     }
 }

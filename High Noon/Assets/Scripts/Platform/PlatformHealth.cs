@@ -9,10 +9,17 @@ namespace Platform
         [SerializeField]
         private int _health = 5;
 
+        private GameObject _particleSystem;
+
         public int Health
         {
             get { return _health; }
             set { _health = value; }
+        }
+
+        public GameObject SetParticleObject
+        {
+            set { _particleSystem = value; }
         }
 
         public void DamageHealth(int damage)
@@ -21,7 +28,18 @@ namespace Platform
             if(this._health <= 0)
             {
                 //destroy tile
+                DestroyPlatform();
             }
+        }
+
+        private void DestroyPlatform()
+        {
+            Destroy(this.gameObject, 0.3f);
+            if (_particleSystem)
+            {
+                Instantiate<GameObject>(_particleSystem, transform.position, Quaternion.identity);
+            }
+            
         }
     }
 }
